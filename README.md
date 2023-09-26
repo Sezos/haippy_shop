@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Website I built for Nana for her to sell her clothes and accessories
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This Project was built with React and Reactstrap
+
+# If you would like to use this project with customizations
 
 ## Available Scripts
 
