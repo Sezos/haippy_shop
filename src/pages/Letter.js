@@ -6,9 +6,9 @@ function Letter() {
                 borderRadius: "30px",
                 borderWidth: "5px",
                 padding: "30px",
-                border: "5px solid purple",
+                border: "5px solid #AF94F6",
                 backgroundColor: "white",
-                width: "100%",
+                width: "80%",
             }}
         >
             Таны худалдан авсан эд зүйлсийн мөнгө нь Австрали руу сурах

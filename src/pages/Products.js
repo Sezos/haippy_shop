@@ -4,39 +4,41 @@ import {
     CardBody,
     CardImg,
     CardTitle,
-    CardText,
     Row,
     Col,
 } from "reactstrap";
-import Types from "./Types";
+
+import { firestore } from "./Firebase";
+import {
+    getDocs,
+    collection,
+    // addDoc, updateDoc
+} from "firebase/firestore";
+
 import background from "../Images/Background.png";
+import { useEffect, useState } from "react";
+
 function Products() {
-    const buttons = [
-        {
-            name: "Dresses & Skirts",
-        },
-        {
-            name: "Leggings",
-        },
-        {
-            name: "Bags",
-        },
-        {
-            name: "T-Shirt",
-        },
-        {
-            name: "Shoes",
-        },
-        {
-            name: "Sweater",
-        },
-        {
-            name: "Hat & Scarf",
-        },
-        {
-            name: "Other",
-        },
-    ];
+    const TypesCollection = collection(firestore, "types");
+    const [types, setTypes] = useState([]);
+    const [selectedType, setSelectedType] = useState(-1);
+
+    useEffect(() => {
+        getTypes();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const getTypes = async () => {
+        const tempDatas = await getDocs(TypesCollection);
+        const docs = [];
+
+        tempDatas.forEach((data) => {
+            docs.push({ ...data.data(), id: data.id });
+        });
+
+        setTypes(docs);
+    };
+
     return (
         <div
             className="letter"
@@ -44,46 +46,66 @@ function Products() {
                 borderRadius: "30px",
                 borderWidth: "5px",
                 padding: "30px",
-                border: "5px solid purple",
+                border: "5px solid #AF94F6",
                 backgroundColor: "white",
-                width: "100%",
+                width: "95%",
                 marginBottom: "200px",
             }}
         >
             <div>
-                <Button style={{ marginRight: "10px", borderRadius: "10px" }}>
+                <Button
+                    style={{
+                        marginRight: "10px",
+                        borderRadius: "10px",
+                        paddingLeft: "30px",
+                        paddingRight: "30px",
+                        marginBottom: "10px",
+                        border: 0,
+                        color: "black",
+                        background:
+                            selectedType === -1 ? "lightblue" : "lightgray",
+                    }}
+                    onClick={() => {
+                        setSelectedType(-1);
+                    }}
+                >
                     All
                 </Button>
-                {buttons.map((but, idx) => {
+                {types.map((but, idx) => {
                     return (
                         <Button
                             style={{
                                 marginLeft: "5px",
+                                marginBottom: "10px",
                                 borderRadius: "10px",
                                 backgroundColor: "lightgray",
                                 border: 0,
                                 color: "black",
+                                background:
+                                    selectedType === but.value
+                                        ? "lightblue"
+                                        : "lightgray",
                             }}
                             index={idx}
+                            value={but.value}
+                            onClick={() => {
+                                setSelectedType(but.value);
+                            }}
                         >
                             {but.name}
                         </Button>
                     );
                 })}
             </div>
+
             <div style={{ marginTop: "40px" }}>
                 <Row>
                     <Col>
-                        <Card>
+                        <Card style={{ marginBottom: "10px" }}>
                             <CardImg variant="top" src={background} />
                             <CardBody>
                                 <CardTitle>Card Title</CardTitle>
-                                <CardText>
-                                    Some quick example text to build on the card
-                                    title and make up the bulk of the card's
-                                    content.
-                                </CardText>
-                                <Button variant="primary">Go somewhere</Button>
+                                <Button variant="primary">See More</Button>
                             </CardBody>
                         </Card>
                     </Col>
@@ -93,12 +115,7 @@ function Products() {
                             <CardImg variant="top" src={background} />
                             <CardBody>
                                 <CardTitle>Card Title</CardTitle>
-                                <CardText>
-                                    Some quick example text to build on the card
-                                    title and make up the bulk of the card's
-                                    content.
-                                </CardText>
-                                <Button variant="primary">Go somewhere</Button>
+                                <Button variant="primary">See More</Button>
                             </CardBody>
                         </Card>
                     </Col>
@@ -108,12 +125,7 @@ function Products() {
                             <CardImg variant="top" src={background} />
                             <CardBody>
                                 <CardTitle>Card Title</CardTitle>
-                                <CardText>
-                                    Some quick example text to build on the card
-                                    title and make up the bulk of the card's
-                                    content.
-                                </CardText>
-                                <Button variant="primary">Go somewhere</Button>
+                                <Button variant="primary">See More</Button>
                             </CardBody>
                         </Card>
                     </Col>
@@ -123,12 +135,7 @@ function Products() {
                             <CardImg variant="top" src={background} />
                             <CardBody>
                                 <CardTitle>Card Title</CardTitle>
-                                <CardText>
-                                    Some quick example text to build on the card
-                                    title and make up the bulk of the card's
-                                    content.
-                                </CardText>
-                                <Button variant="primary">Go somewhere</Button>
+                                <Button variant="primary">See More</Button>
                             </CardBody>
                         </Card>
                     </Col>
