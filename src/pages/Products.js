@@ -20,11 +20,14 @@ import { useEffect, useState } from "react";
 
 function Products() {
     const TypesCollection = collection(firestore, "types");
+    const ProductsCollection = collection(firestore, "products");
     const [types, setTypes] = useState([]);
+    const [products, setProducts] = useState([]);
     const [selectedType, setSelectedType] = useState(-1);
 
     useEffect(() => {
         getTypes();
+        getProducts();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -37,6 +40,17 @@ function Products() {
         });
 
         setTypes(docs);
+    };
+
+    const getProducts = async () => {
+        const tempDatas = await getDocs(ProductsCollection);
+        const docs = [];
+
+        tempDatas.forEach((data) => {
+            docs.push({ ...data.data(), id: data.id });
+        });
+        console.log(docs);
+        setProducts(docs);
     };
 
     return (
@@ -100,6 +114,24 @@ function Products() {
 
             <div style={{ marginTop: "40px" }}>
                 <Row>
+                    {products.map((product, idx) => {
+                        return (
+                            <Col>
+                                <Card style={{ marginBottom: "10px" }}>
+                                    <CardImg
+                                        variant="top"
+                                        src={product.image}
+                                    />
+                                    <CardBody>
+                                        <CardTitle>{product.name}</CardTitle>
+                                        <Button variant="primary">
+                                            See More
+                                        </Button>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        );
+                    })}
                     <Col>
                         <Card style={{ marginBottom: "10px" }}>
                             <CardImg variant="top" src={background} />
