@@ -368,47 +368,48 @@ function Products() {
                                             null
                                         )
                                             window.location.href = "/info";
-                                        console.log(
-                                            localStorage.getItem("userInfo")
-                                        );
-                                        if (
-                                            saves?.products.includes(
-                                                products[selectedProduct].id
-                                            )
-                                        ) {
-                                            save(
-                                                saves?.products.filter(
-                                                    (lol) =>
-                                                        lol !==
-                                                        products[
-                                                            selectedProduct
-                                                        ]?.id
+                                        else {
+                                            if (
+                                                saves?.products.includes(
+                                                    products[selectedProduct].id
                                                 )
-                                            );
-                                            setSaves({
-                                                ...saves,
-                                                products:
+                                            ) {
+                                                save(
                                                     saves?.products.filter(
                                                         (lol) =>
                                                             lol !==
                                                             products[
                                                                 selectedProduct
                                                             ]?.id
-                                                    ),
-                                            });
-                                        } else {
-                                            save([
-                                                ...saves?.products,
-                                                products[selectedProduct]?.id,
-                                            ]);
-                                            setSaves({
-                                                ...saves,
-                                                products: [
+                                                    )
+                                                );
+                                                setSaves({
+                                                    ...saves,
+                                                    products:
+                                                        saves?.products.filter(
+                                                            (lol) =>
+                                                                lol !==
+                                                                products[
+                                                                    selectedProduct
+                                                                ]?.id
+                                                        ),
+                                                });
+                                            } else {
+                                                save([
                                                     ...saves?.products,
                                                     products[selectedProduct]
                                                         ?.id,
-                                                ],
-                                            });
+                                                ]);
+                                                setSaves({
+                                                    ...saves,
+                                                    products: [
+                                                        ...saves?.products,
+                                                        products[
+                                                            selectedProduct
+                                                        ]?.id,
+                                                    ],
+                                                });
+                                            }
                                         }
                                     }}
                                 >
