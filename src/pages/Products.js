@@ -206,6 +206,7 @@ function Products() {
                                 <Card style={{ marginBottom: "10px" }}>
                                     <CardImg
                                         variant="top"
+                                        height={"300px"}
                                         src={product?.images[0]}
                                     />
                                     <CardBody>
