@@ -7,6 +7,7 @@ import {
     Input,
     InputGroup,
     InputGroupText,
+    List,
     Row,
 } from "reactstrap";
 import { useAlert } from "react-alert";
@@ -55,6 +56,36 @@ function InfoPage() {
                     justifyContent: "center",
                 }}
             >
+                <div
+                    style={{
+                        display: "flex",
+                        position: "absolute",
+                        width: window.innerWidth <= 640 ? "89vw" : "30vw",
+                        height: window.innerWidth <= 640 ? "20vh" : "30vh",
+                        left: "5%",
+                        top: "5%",
+                        borderTopLeftRadius: "40px",
+                        borderTopRightRadius:
+                            window.innerWidth <= 640 ? "40px" : "0px",
+                        border: "5px solid #AF94F6",
+                        borderRight: window.innerWidth <= 640 ? "5px" : "0px",
+                        borderBottom: "0px",
+                        backgroundColor: "#dccdfe",
+                        padding: "3%",
+                    }}
+                >
+                    <List>
+                        <p style={{ fontWeight: "bold" }}>
+                            Хэрхэн бараа захиалах вэ?
+                        </p>
+                        <li>Бараагаа Сонгон Save хийх</li>
+                        <li>Мэдээллээ оруулах</li>
+                        <li>
+                            Contact хэсгээр Instagram эсвэл Facebook ээр
+                            холбогдох
+                        </li>
+                    </List>
+                </div>
                 <Col
                     style={{
                         display: "flex",
