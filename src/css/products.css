@@ -1,0 +1,53 @@
+Card {
+    position: relative;
+    border-radius: 100px;
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+.card-image{
+    border-radius: 100px;
+    height: 350px;
+    filter: brightness(80%);
+}
+
+/* .card-image:hover {
+    
+} */
+
+.card-image:hover .card-text {
+    color: black;
+}
+
+.card-text {
+    font-weight: bold;
+    position: absolute;
+    right: 10%;
+    left: 50%;
+    transform: translate(-50%,0);
+    bottom: 15%;
+    color: white;
+}
+
+.card-button {
+    border: 0;
+    border-radius: 5px;
+    width: 40%;
+    height: 40px;
+    position: absolute;
+    bottom: 5%;
+    left: 30%;
+    background-color: #AF94F6;
+
+}
+
+.card-button:hover {
+    background-color: #dccdfe;
+}
+
+.card-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    height: 20px;
+}

@@ -1,9 +1,11 @@
+import "../css/products.css";
+
 import {
     Button,
     Card,
-    CardBody,
+    // CardBody,
     CardImg,
-    CardTitle,
+    // CardTitle,
     Row,
     Col,
     Modal,
@@ -12,6 +14,7 @@ import {
 } from "reactstrap";
 
 import { firestore } from "./Firebase";
+
 import {
     getDocs,
     collection,
@@ -37,10 +40,13 @@ function Products() {
     const [showingProducts, setShowingProducts] = useState([]);
     const [selectedType, setSelectedType] = useState(-1);
     const [selectedProduct, setSelectedProduct] = useState(-1);
+    const [selectedImage, setSelectedImage] = useState(0);
     const [modal, setModal] = useState(false);
 
     const toggle = () => {
         setModal(!modal);
+        setSelectedImage(-1);
+        setSelectedImage(0);
     };
 
     const save = async (lol) => {
@@ -202,57 +208,43 @@ function Products() {
                 <Row>
                     {showingProducts.map((product, idx) => {
                         return (
-                            <Col md="3" sm="6" key={idx}>
-                                <Card style={{ marginBottom: "10px" }}>
+                            <Col
+                                md="3"
+                                sm="6"
+                                key={idx}
+                                style={{
+                                    width: "250px",
+                                    marginBottom: "20px",
+                                }}
+                            >
+                                <Card>
                                     <CardImg
                                         variant="top"
-                                        height={"300px"}
+                                        className="card-image"
                                         src={product?.images[0]}
                                     />
-                                    <CardBody>
-                                        <CardTitle
-                                            style={{ fontWeight: "bold" }}
-                                        >
-                                            {product.name}
-                                        </CardTitle>
-                                        <Row>
-                                            <Col>
-                                                <Button
-                                                    style={{
-                                                        backgroundColor:
-                                                            "#AF94F6",
-                                                    }}
-                                                    onClick={() => {
-                                                        setSelectedProduct(idx);
-                                                        toggle();
-                                                    }}
-                                                >
-                                                    See More
-                                                </Button>
-                                            </Col>
-                                            <Col
-                                                style={{
-                                                    display: "flex",
-                                                    justifyContent: "right",
-                                                    alignItems: "center",
-                                                }}
+                                    <p className="card-text">{product.name}</p>
+                                    <button
+                                        className="card-button"
+                                        onClick={() => {
+                                            setSelectedProduct(idx);
+                                            toggle();
+                                        }}
+                                    >
+                                        See More
+                                    </button>
+
+                                    {product &&
+                                        saves?.products.includes(
+                                            product.id
+                                        ) && (
+                                            <Badge
+                                                className="card-badge"
+                                                color="success"
                                             >
-                                                {product &&
-                                                    saves?.products.includes(
-                                                        product.id
-                                                    ) && (
-                                                        <Badge
-                                                            style={{
-                                                                height: "20px",
-                                                            }}
-                                                            color="success"
-                                                        >
-                                                            saved
-                                                        </Badge>
-                                                    )}
-                                            </Col>
-                                        </Row>
-                                    </CardBody>
+                                                saved
+                                            </Badge>
+                                        )}
                                 </Card>
                             </Col>
                         );
@@ -267,34 +259,54 @@ function Products() {
                             <Row>
                                 <img
                                     alt="pic1"
-                                    src={products[selectedProduct]?.images[0]}
+                                    src={
+                                        products[selectedProduct]?.images[
+                                            selectedImage
+                                        ]
+                                    }
                                     style={{ borderRadius: "5%" }}
                                 />
                             </Row>
-                            <Row
+                            <div
                                 style={{
+                                    display: "flex",
+
                                     overflow: "scroll",
                                     marginTop: "20px",
                                 }}
                             >
                                 {products[selectedProduct]?.images.map(
                                     (image, idx) => {
-                                        if (idx === 0) return <></>;
+                                        if (idx === selectedImage) return <></>;
                                         return (
                                             <Col key={idx}>
-                                                <img
-                                                    alt={idx}
-                                                    src={image}
-                                                    width={"150px"}
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedImage(idx);
+                                                    }}
                                                     style={{
+                                                        border: 0,
+                                                        padding: 0,
+                                                        width: "150px",
+                                                        margin: 0,
+                                                        marginRight: "20px",
                                                         borderRadius: "5%",
                                                     }}
-                                                />
+                                                >
+                                                    <img
+                                                        alt={idx}
+                                                        src={image}
+                                                        width={"150px"}
+                                                        style={{
+                                                            borderRadius: "5%",
+                                                        }}
+                                                    />
+                                                </button>
                                             </Col>
                                         );
                                     }
                                 )}
-                            </Row>
+                            </div>
                         </Col>
                         <Col
                             style={{
