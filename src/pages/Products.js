@@ -6,30 +6,67 @@ import {
     CardTitle,
     Row,
     Col,
+    Modal,
+    ModalBody,
+    Badge,
 } from "reactstrap";
 
 import { firestore } from "./Firebase";
 import {
     getDocs,
     collection,
-    // addDoc, updateDoc
+    updateDoc,
+    query,
+    doc,
+    where,
 } from "firebase/firestore";
 
-import background from "../Images/Background.png";
 import { useEffect, useState } from "react";
 
 function Products() {
     const TypesCollection = collection(firestore, "types");
     const ProductsCollection = collection(firestore, "products");
+    const ConditionsCollection = collection(firestore, "Conditions");
+    const SavedCollection = collection(firestore, "saved");
+
+    const [saves, setSaves] = useState({ phone: "", products: [] });
     const [types, setTypes] = useState([]);
+    const [conditions, setConditions] = useState([]);
     const [products, setProducts] = useState([]);
+    const [showingProducts, setShowingProducts] = useState([]);
     const [selectedType, setSelectedType] = useState(-1);
+    const [selectedProduct, setSelectedProduct] = useState(-1);
+    const [modal, setModal] = useState(false);
+
+    const toggle = () => {
+        setModal(!modal);
+    };
+
+    const save = async (lol) => {
+        const sth = await updateDoc(doc(firestore, `saved/${saves.id}`), {
+            products: lol,
+        });
+        console.log(sth);
+    };
 
     useEffect(() => {
         getTypes();
+        getConditions();
         getProducts();
+        getSaved();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (selectedType === -1) {
+            setShowingProducts(products);
+        } else {
+            setShowingProducts(
+                // eslint-disable-next-line eqeqeq
+                products.filter((product) => product.types == selectedType)
+            );
+        }
+    }, [selectedType, products]);
 
     const getTypes = async () => {
         const tempDatas = await getDocs(TypesCollection);
@@ -42,6 +79,38 @@ function Products() {
         setTypes(docs);
     };
 
+    const getSaved = async () => {
+        const user = JSON.parse(localStorage.getItem("userInfo"));
+        if (user && user.phone) {
+            const datas = await getDocs(
+                query(SavedCollection, where("phone", "==", user.phone))
+            );
+
+            let docs;
+
+            datas.forEach((data) => {
+                docs = {
+                    phone: data.data().phone,
+                    products: data.data().products,
+                    id: data.id,
+                };
+            });
+            console.log(docs);
+            setSaves(docs);
+        }
+    };
+
+    const getConditions = async () => {
+        const tempDatas = await getDocs(ConditionsCollection);
+        const docs = [];
+
+        tempDatas.forEach((data) => {
+            docs.push({ ...data.data(), id: data.id });
+        });
+
+        setConditions(docs);
+    };
+
     const getProducts = async () => {
         const tempDatas = await getDocs(ProductsCollection);
         const docs = [];
@@ -49,8 +118,9 @@ function Products() {
         tempDatas.forEach((data) => {
             docs.push({ ...data.data(), id: data.id });
         });
-        console.log(docs);
+
         setProducts(docs);
+        setShowingProducts(docs);
     };
 
     return (
@@ -100,7 +170,7 @@ function Products() {
                                         ? "lightblue"
                                         : "lightgray",
                             }}
-                            index={idx}
+                            key={idx}
                             value={but.value}
                             onClick={() => {
                                 setSelectedType(but.value);
@@ -111,68 +181,222 @@ function Products() {
                     );
                 })}
             </div>
-
             <div style={{ marginTop: "40px" }}>
                 <Row>
-                    {products.map((product, idx) => {
+                    {showingProducts.map((product, idx) => {
                         return (
-                            <Col>
+                            <Col md="3" sm="6" key={idx}>
                                 <Card style={{ marginBottom: "10px" }}>
                                     <CardImg
                                         variant="top"
-                                        src={product.image}
+                                        src={product?.images[0]}
                                     />
                                     <CardBody>
-                                        <CardTitle>{product.name}</CardTitle>
-                                        <Button variant="primary">
-                                            See More
-                                        </Button>
+                                        <CardTitle
+                                            style={{ fontWeight: "bold" }}
+                                        >
+                                            {product.name}
+                                        </CardTitle>
+                                        <Row>
+                                            <Col>
+                                                <Button
+                                                    style={{
+                                                        backgroundColor:
+                                                            "#AF94F6",
+                                                    }}
+                                                    onClick={() => {
+                                                        setSelectedProduct(idx);
+                                                        toggle();
+                                                    }}
+                                                >
+                                                    See More
+                                                </Button>
+                                            </Col>
+                                            <Col
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "right",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                {product &&
+                                                    saves.products.includes(
+                                                        product.id
+                                                    ) && (
+                                                        <Badge
+                                                            style={{
+                                                                height: "20px",
+                                                            }}
+                                                            color="success"
+                                                        >
+                                                            saved
+                                                        </Badge>
+                                                    )}
+                                            </Col>
+                                        </Row>
                                     </CardBody>
                                 </Card>
                             </Col>
                         );
                     })}
-                    <Col>
-                        <Card style={{ marginBottom: "10px" }}>
-                            <CardImg variant="top" src={background} />
-                            <CardBody>
-                                <CardTitle>Card Title</CardTitle>
-                                <Button variant="primary">See More</Button>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    <Col>
-                        <Card>
-                            <CardImg variant="top" src={background} />
-                            <CardBody>
-                                <CardTitle>Card Title</CardTitle>
-                                <Button variant="primary">See More</Button>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    <Col>
-                        <Card>
-                            <CardImg variant="top" src={background} />
-                            <CardBody>
-                                <CardTitle>Card Title</CardTitle>
-                                <Button variant="primary">See More</Button>
-                            </CardBody>
-                        </Card>
-                    </Col>
-
-                    <Col>
-                        <Card>
-                            <CardImg variant="top" src={background} />
-                            <CardBody>
-                                <CardTitle>Card Title</CardTitle>
-                                <Button variant="primary">See More</Button>
-                            </CardBody>
-                        </Card>
-                    </Col>
                 </Row>
             </div>
+
+            <Modal isOpen={modal} toggle={toggle} size="xl">
+                <ModalBody>
+                    <Row>
+                        <Col md="6" sm="12">
+                            <Row>
+                                <img
+                                    alt="pic1"
+                                    src={products[selectedProduct]?.images[0]}
+                                    style={{ borderRadius: "5%" }}
+                                />
+                            </Row>
+                            <Row style={{ overflow: "scroll" }}>
+                                {products[selectedProduct]?.images.map(
+                                    (image, idx) => {
+                                        if (idx === 0) return <></>;
+                                        return (
+                                            <Col key={idx}>
+                                                <img
+                                                    alt={idx}
+                                                    src={image}
+                                                    style={{
+                                                        borderRadius: "5%",
+                                                    }}
+                                                />
+                                            </Col>
+                                        );
+                                    }
+                                )}
+                            </Row>
+                        </Col>
+                        <Col
+                            style={{
+                                paddingLeft: "30px",
+                            }}
+                        >
+                            <Row style={{ marginBottom: "50px" }}>
+                                <Row>
+                                    <Col>
+                                        <h1
+                                            style={{
+                                                color: "purple",
+                                                fontSize: "50px",
+                                                fontWeight: "bolder",
+                                                marginLeft: "-15px",
+                                            }}
+                                        >
+                                            {products[selectedProduct]?.name}
+                                        </h1>
+                                    </Col>
+                                    <Col
+                                        md="2"
+                                        style={{
+                                            alignItems: "center",
+                                            display: "flex",
+                                        }}
+                                    >
+                                        <Badge color="primary">
+                                            {
+                                                conditions[
+                                                    products[selectedProduct]
+                                                        ?.condition
+                                                ]?.name
+                                            }
+                                        </Badge>
+                                    </Col>
+                                </Row>
+                                <Row
+                                    style={{
+                                        color: "gray",
+                                        marginBottom: "30px",
+                                    }}
+                                >
+                                    ₮{products[selectedProduct]?.price}
+                                </Row>
+                                <Row>
+                                    {products[selectedProduct]?.description}
+                                </Row>
+                            </Row>
+                            <Row
+                                style={{
+                                    position: "absolute",
+                                    bottom: "20px",
+                                    width: "47%",
+                                }}
+                            >
+                                <Button
+                                    style={{
+                                        width: "40%",
+                                        marginRight: "10%",
+                                        marginLeft: "5%",
+                                    }}
+                                    color="primary"
+                                    onClick={() => {
+                                        window.location.href = "/contact";
+                                    }}
+                                >
+                                    Contact
+                                </Button>
+                                <Button
+                                    style={{
+                                        width: "40%",
+                                    }}
+                                    color="success"
+                                    onClick={() => {
+                                        if (
+                                            saves.products.includes(
+                                                products[selectedProduct].id
+                                            )
+                                        ) {
+                                            save(
+                                                saves.products.filter(
+                                                    (lol) =>
+                                                        lol !==
+                                                        products[
+                                                            selectedProduct
+                                                        ]?.id
+                                                )
+                                            );
+                                            setSaves({
+                                                ...saves,
+                                                products: saves.products.filter(
+                                                    (lol) =>
+                                                        lol !==
+                                                        products[
+                                                            selectedProduct
+                                                        ]?.id
+                                                ),
+                                            });
+                                        } else {
+                                            save([
+                                                ...saves.products,
+                                                products[selectedProduct]?.id,
+                                            ]);
+                                            setSaves({
+                                                ...saves,
+                                                products: [
+                                                    ...saves.products,
+                                                    products[selectedProduct]
+                                                        ?.id,
+                                                ],
+                                            });
+                                        }
+                                    }}
+                                >
+                                    {saves.products.includes(
+                                        products[selectedProduct]?.id
+                                    )
+                                        ? "Unsave"
+                                        : "Save"}
+                                </Button>
+                            </Row>
+                        </Col>
+                    </Row>
+                </ModalBody>
+            </Modal>
         </div>
     );
 }
