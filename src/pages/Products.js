@@ -19,6 +19,7 @@ import {
     query,
     doc,
     where,
+    addDoc,
 } from "firebase/firestore";
 
 import { useEffect, useState } from "react";
@@ -43,10 +44,19 @@ function Products() {
     };
 
     const save = async (lol) => {
-        const sth = await updateDoc(doc(firestore, `saved/${saves.id}`), {
-            products: lol,
-        });
-        console.log(sth);
+        if (saves) {
+            console.log(saves);
+            const sth = await updateDoc(doc(firestore, `saved/${saves.id}`), {
+                products: lol,
+            });
+            console.log(sth);
+        } else {
+            const sth = await addDoc(SavedCollection, {
+                phone: localStorage.getItem("userInfo").phone,
+                products: lol,
+            });
+            console.log(sth);
+        }
     };
 
     useEffect(() => {
@@ -85,18 +95,25 @@ function Products() {
             const datas = await getDocs(
                 query(SavedCollection, where("phone", "==", user.phone))
             );
-
             let docs;
 
             datas.forEach((data) => {
                 docs = {
-                    phone: data.data().phone,
-                    products: data.data().products,
+                    phone: data.data()?.phone,
+                    products: data.data()?.products,
                     id: data.id,
                 };
             });
-            console.log(docs);
-            setSaves(docs);
+            console.log(docs, "lol");
+            if (docs === undefined) {
+                await addDoc(SavedCollection, {
+                    phone: user.phone,
+                    products: [],
+                });
+                getSaved();
+            } else {
+                setSaves(docs);
+            }
         }
     };
 
@@ -220,7 +237,7 @@ function Products() {
                                                 }}
                                             >
                                                 {product &&
-                                                    saves.products.includes(
+                                                    saves?.products.includes(
                                                         product.id
                                                     ) && (
                                                         <Badge
@@ -347,12 +364,20 @@ function Products() {
                                     color="success"
                                     onClick={() => {
                                         if (
-                                            saves.products.includes(
+                                            localStorage.getItem("userInfo") ===
+                                            null
+                                        )
+                                            window.location.href = "/info";
+                                        console.log(
+                                            localStorage.getItem("userInfo")
+                                        );
+                                        if (
+                                            saves?.products.includes(
                                                 products[selectedProduct].id
                                             )
                                         ) {
                                             save(
-                                                saves.products.filter(
+                                                saves?.products.filter(
                                                     (lol) =>
                                                         lol !==
                                                         products[
@@ -362,23 +387,24 @@ function Products() {
                                             );
                                             setSaves({
                                                 ...saves,
-                                                products: saves.products.filter(
-                                                    (lol) =>
-                                                        lol !==
-                                                        products[
-                                                            selectedProduct
-                                                        ]?.id
-                                                ),
+                                                products:
+                                                    saves?.products.filter(
+                                                        (lol) =>
+                                                            lol !==
+                                                            products[
+                                                                selectedProduct
+                                                            ]?.id
+                                                    ),
                                             });
                                         } else {
                                             save([
-                                                ...saves.products,
+                                                ...saves?.products,
                                                 products[selectedProduct]?.id,
                                             ]);
                                             setSaves({
                                                 ...saves,
                                                 products: [
-                                                    ...saves.products,
+                                                    ...saves?.products,
                                                     products[selectedProduct]
                                                         ?.id,
                                                 ],
@@ -386,7 +412,7 @@ function Products() {
                                         }
                                     }}
                                 >
-                                    {saves.products.includes(
+                                    {saves?.products.includes(
                                         products[selectedProduct]?.id
                                     )
                                         ? "Unsave"
