@@ -271,7 +271,12 @@ function Products() {
                                     style={{ borderRadius: "5%" }}
                                 />
                             </Row>
-                            <Row style={{ overflow: "scroll" }}>
+                            <Row
+                                style={{
+                                    overflow: "scroll",
+                                    marginTop: "20px",
+                                }}
+                            >
                                 {products[selectedProduct]?.images.map(
                                     (image, idx) => {
                                         if (idx === 0) return <></>;
@@ -280,6 +285,7 @@ function Products() {
                                                 <img
                                                     alt={idx}
                                                     src={image}
+                                                    width={"150px"}
                                                     style={{
                                                         borderRadius: "5%",
                                                     }}

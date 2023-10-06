@@ -150,6 +150,7 @@ function Create() {
     const uploadImages = async (imgs) => {
         const imgURLs = [];
         setState(1);
+        let number = 1;
         Array.from(imgs).forEach(async (image, idx) => {
             const newImage = await resizeFile(image);
             const storageRef = ref(storage, `images/${data.name}/${idx}`);
@@ -167,7 +168,8 @@ function Create() {
                     getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                         imgURLs.push(url);
                     });
-                    setProgress(((idx + 1) / imgs.length) * 100);
+                    setProgress((number / imgs.length) * 100);
+                    number++;
                 }
             );
         });
