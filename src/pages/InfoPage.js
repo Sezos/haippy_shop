@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Button,
     Col,
@@ -60,30 +60,40 @@ function InfoPage() {
                     style={{
                         display: "flex",
                         position: "absolute",
-                        width: window.innerWidth <= 640 ? "89vw" : "30vw",
-                        height: window.innerWidth <= 640 ? "20vh" : "30vh",
+                        width: "calc(90% - 5px)",
+                        height: window.innerWidth <= 640 ? "20vh" : "20vh",
                         left: "5%",
                         top: "5%",
                         borderTopLeftRadius: "40px",
-                        borderTopRightRadius:
-                            window.innerWidth <= 640 ? "40px" : "0px",
+                        borderTopRightRadius: "40px",
                         border: "5px solid #AF94F6",
-                        borderRight: window.innerWidth <= 640 ? "5px" : "0px",
+                        borderRight: "5px",
                         borderBottom: "0px",
                         backgroundColor: "#dccdfe",
                         padding: "3%",
                     }}
                 >
                     <List>
-                        <p style={{ fontWeight: "bold" }}>
-                            Хэрхэн бараа захиалах вэ?
+                        <p
+                            style={{
+                                fontSize:
+                                    window.innerWidth <= 640 ? "40%" : "90%",
+                            }}
+                        >
+                            Бүтээгдэхүүн худалдан авахдаа дараах зөвлөмжийг
+                            дагаарай. Бүтээгдэхүүн бүрийн доор хэсэгт байрлах
+                            See more хэсгээс бүтээгдэхүүний зураг, дэлгэрэнгүй
+                            тайлбар хэсгийг харах боломжтой. See more → Contact
+                            us хэсэгт харуулж буй instagram эсвэл Facebook
+                            хаягуудаар холбогдон сонирхсон эд зүйлээ худалдан
+                            авах боломжтой. Вебтэй холбоотой санал хүсэлт байвал
+                            Contact хэсэгт өөрийн мэдээллээ оруулснаар админд
+                            таны хүсэлт илгээгдэнэ. Сонирхсон эд зүйлээ сонгон
+                            Save хийх - Save хийснээр таны сонирхсон бүх бараа
+                            хадгалагдаад явах ба мэдээллээ оруулснаар админ таны
+                            сонирхсон бүх барааны мэдээллийг харан таньтай
+                            холбогдох боломжтой болно.
                         </p>
-                        <li>Бараагаа Сонгон Save хийх</li>
-                        <li>Мэдээллээ оруулах</li>
-                        <li>
-                            Contact хэсгээр Instagram эсвэл Facebook ээр
-                            холбогдох
-                        </li>
                     </List>
                 </div>
                 <Col

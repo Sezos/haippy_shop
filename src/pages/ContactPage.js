@@ -3,7 +3,6 @@ import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import {
     Button,
     Col,
-    Container,
     FormGroup,
     Input,
     InputGroup,
@@ -19,16 +18,17 @@ function ContactPage() {
             style={{
                 display: "flex",
                 width: "100vw",
-                height: "100vh",
+                // height: "100vh",
+                minHeight: "100vh",
                 alignItems: "center",
                 justifyContent: "center",
             }}
         >
-            <Container
+            <div
                 style={{
                     background: "white",
                     width: "90%",
-                    height: "90vh",
+                    // height: "90vh",
                     borderRadius: "40px",
                     border: "5px solid #AF94F6",
                     padding: "20px",
@@ -36,25 +36,6 @@ function ContactPage() {
             >
                 <Col style={{ height: "100%" }}>
                     <Row>
-                        <Col>
-                            <div
-                                style={{
-                                    marginTop: "10px",
-                                    marginLeft: "20px",
-                                    display: "flex",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <Button
-                                    style={{ backgroundColor: "#AF94F6" }}
-                                    onClick={() => {
-                                        window.location.href = "/";
-                                    }}
-                                >
-                                    Back
-                                </Button>
-                            </div>
-                        </Col>
                         <Col>
                             <div
                                 style={{
@@ -72,141 +53,203 @@ function ContactPage() {
                                 </h1>
                             </div>
                         </Col>
-                        <Col></Col>
                     </Row>
-                    <Row style={{ height: "80%" }}>
+                    <Row
+                        style={{
+                            height: "80%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
                         <Col
                             style={{
                                 marginLeft: "10%",
-                                // marginRight: "20%",
-                                display: "flex",
+                                // display: "flex",
+                                width:
+                                    window.innerWidth <= 640 ? "100%" : "auto",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                height: "100%",
+                                height: "50%",
                                 // background: "black",
                             }}
                         >
-                            <FormGroup>
-                                <InputGroup style={{ marginBottom: "20px" }}>
+                            <Row
+                                style={{
+                                    display: "flex",
+                                    // marginLeft: "5%",
+                                }}
+                            >
+                                <b>
+                                    Худалдан авалт хийх бол дараах сувгуудаар
+                                    холбогдох
+                                </b>
+                            </Row>
+                            <Row style={{ marginTop: "20px" }}>
+                                <FormGroup>
+                                    <InputGroup
+                                        style={{ marginBottom: "20px" }}
+                                    >
+                                        <InputGroupText
+                                            style={{
+                                                backgroundColor: "#AF94F6",
+                                            }}
+                                        >
+                                            Name
+                                        </InputGroupText>
+                                        <Input
+                                            style={{
+                                                backgroundColor: "#DCCDFE",
+                                            }}
+                                        />
+                                    </InputGroup>
+                                    <InputGroup
+                                        style={{ marginBottom: "20px" }}
+                                    >
+                                        <InputGroupText
+                                            style={{
+                                                backgroundColor: "#AF94F6",
+                                            }}
+                                        >
+                                            Phone Number
+                                        </InputGroupText>
+                                        <Input
+                                            type="number"
+                                            style={{
+                                                backgroundColor: "#DCCDFE",
+                                            }}
+                                        />
+                                    </InputGroup>
                                     <InputGroupText
                                         style={{ backgroundColor: "#AF94F6" }}
                                     >
-                                        Name
+                                        Message
                                     </InputGroupText>
                                     <Input
-                                        style={{ backgroundColor: "#DCCDFE" }}
+                                        size="xl"
+                                        type="textarea"
+                                        style={{
+                                            backgroundColor: "#DCCDFE",
+                                            marginBottom: "30px",
+                                        }}
                                     />
-                                </InputGroup>
-                                <InputGroup style={{ marginBottom: "20px" }}>
-                                    <InputGroupText
+                                    <Button
                                         style={{ backgroundColor: "#AF94F6" }}
                                     >
-                                        Phone Number
-                                    </InputGroupText>
-                                    <Input
-                                        type="number"
-                                        style={{ backgroundColor: "#DCCDFE" }}
-                                    />
-                                </InputGroup>
-                                <InputGroupText
-                                    style={{ backgroundColor: "#AF94F6" }}
-                                >
-                                    Message
-                                </InputGroupText>
-                                <Input
-                                    size="xl"
-                                    type="textarea"
-                                    style={{
-                                        backgroundColor: "#DCCDFE",
-                                        marginBottom: "30px",
-                                    }}
-                                />
-                                <Button style={{ backgroundColor: "#AF94F6" }}>
-                                    Submit
-                                </Button>
-                            </FormGroup>
+                                        Submit
+                                    </Button>
+                                </FormGroup>
+                            </Row>
                         </Col>
                         <Col
                             style={{
                                 marginLeft: "10%",
                                 marginRight: "20%",
                                 display: "flex",
+                                flexDirection: "column",
                                 justifyContent: "right",
-                                marginTop: "12%",
-                                borderLeft: "1px solid #AF94F6",
-                                height: "50%",
+                                alignItems: "center",
+                                borderLeft:
+                                    window.innerWidth <= 640
+                                        ? "0px"
+                                        : "1px solid #AF94F6",
+
+                                height: "100%",
+                                minHeight: "50vh",
+                                // background: "black",
                             }}
                         >
-                            <Button
+                            <Row
                                 style={{
-                                    backgroundColor: "#AF94F6",
-                                    marginRight: "10px",
-                                    height: "38px",
-                                }}
-                                onClick={() => {
-                                    window.open(
-                                        "https://instagram.com/nana.ganbold"
-                                    );
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faInstagram} />
-                            </Button>
-                            <Button
-                                style={{
-                                    backgroundColor: "#AF94F6",
-                                    marginRight: "10px",
-                                    height: "38px",
-                                }}
-                                onClick={() => {
-                                    window.open(
-                                        "https://facebook.com/nanaganbold0412"
-                                    );
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faFacebook} />
-                            </Button>
-                            <a
-                                style={{
-                                    backgroundColor: "#AF94F6",
-                                    marginRight: "10px",
-                                    width: "38px",
-                                    height: "38px",
-                                    borderRadius: "5px",
                                     display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    border: "1px solid gray",
+                                    marginLeft: "5%",
+                                    paddingTop: "25px",
                                 }}
-                                href="tel:+97699618000"
                             >
-                                <FontAwesomeIcon
-                                    color="white"
-                                    icon={faPhoneAlt}
-                                />
-                            </a>
-                            <a
+                                <b>
+                                    Худалдан авалт хийх бол дараах сувгуудаар
+                                    холбогдох
+                                </b>
+                            </Row>
+
+                            <Row
                                 style={{
-                                    backgroundColor: "#AF94F6",
-                                    marginRight: "10px",
-                                    width: "38px",
-                                    height: "38px",
-                                    borderRadius: "5px",
                                     display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    border: "1px solid gray",
+                                    // marginLeft: "20%",
+                                    marginTop: "20px",
                                 }}
-                                href="email:nanasan0412@gmail.com"
                             >
-                                <FontAwesomeIcon
-                                    color="white"
-                                    icon={faEnvelope}
-                                />
-                            </a>
+                                <Button
+                                    style={{
+                                        backgroundColor: "#AF94F6",
+                                        marginRight: "10px",
+                                        width: "38px",
+                                    }}
+                                    onClick={() => {
+                                        window.open(
+                                            "https://instagram.com/nana.ganbold"
+                                        );
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faInstagram} />
+                                </Button>
+                                <Button
+                                    style={{
+                                        backgroundColor: "#AF94F6",
+                                        marginRight: "10px",
+                                        width: "38px",
+                                    }}
+                                    onClick={() => {
+                                        window.open(
+                                            "https://facebook.com/nanaganbold0412"
+                                        );
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faFacebook} />
+                                </Button>
+                                <a
+                                    style={{
+                                        backgroundColor: "#AF94F6",
+                                        marginRight: "10px",
+                                        width: "38px",
+                                        height: "38px",
+                                        borderRadius: "5px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        border: "1px solid gray",
+                                    }}
+                                    href="tel:+97699618000"
+                                >
+                                    <FontAwesomeIcon
+                                        color="white"
+                                        icon={faPhoneAlt}
+                                    />
+                                </a>
+                                <a
+                                    style={{
+                                        backgroundColor: "#AF94F6",
+                                        // marginRight: "10px",
+                                        width: "38px",
+                                        height: "38px",
+                                        borderRadius: "5px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        border: "1px solid gray",
+                                    }}
+                                    href="email:nanasan0412@gmail.com"
+                                >
+                                    <FontAwesomeIcon
+                                        color="white"
+                                        icon={faEnvelope}
+                                    />
+                                </a>
+                            </Row>
                         </Col>
                     </Row>
                 </Col>
-            </Container>
+            </div>
         </div>
     );
 }
