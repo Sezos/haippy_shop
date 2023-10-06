@@ -146,6 +146,35 @@ function Products() {
         setShowingProducts(docs);
     };
 
+    const saveUnsave = () => {
+        if (localStorage.getItem("userInfo") === null)
+            window.location.href = "/info";
+        else {
+            if (saves?.products.includes(products[selectedProduct].id)) {
+                save(
+                    saves?.products.filter(
+                        (lol) => lol !== products[selectedProduct]?.id
+                    )
+                );
+                setSaves({
+                    ...saves,
+                    products: saves?.products.filter(
+                        (lol) => lol !== products[selectedProduct]?.id
+                    ),
+                });
+            } else {
+                save([...saves?.products, products[selectedProduct]?.id]);
+                setSaves({
+                    ...saves,
+                    products: [
+                        ...saves?.products,
+                        products[selectedProduct]?.id,
+                    ],
+                });
+            }
+        }
+    };
+
     return (
         <div
             className="letter"
@@ -360,84 +389,36 @@ function Products() {
                                 style={{
                                     position: "absolute",
                                     bottom: "20px",
-                                    width: "47%",
+                                    width:
+                                        window.innerWidth <= 640
+                                            ? "90%"
+                                            : "47%",
                                 }}
                             >
-                                <Button
-                                    style={{
-                                        width: "40%",
-                                        marginRight: "10%",
-                                        marginLeft: "5%",
-                                    }}
-                                    color="primary"
-                                    onClick={() => {
-                                        window.location.href = "/contact";
-                                    }}
-                                >
-                                    Contact
-                                </Button>
-                                <Button
-                                    style={{
-                                        width: "40%",
-                                    }}
-                                    color="success"
-                                    onClick={() => {
-                                        if (
-                                            localStorage.getItem("userInfo") ===
-                                            null
+                                <Col>
+                                    <Button
+                                        // style={{ width: "auto" }}
+                                        color="primary"
+                                        onClick={() => {
+                                            window.location.href = "/contact";
+                                        }}
+                                    >
+                                        Contact
+                                    </Button>
+                                </Col>
+                                <Col>
+                                    <Button
+                                        // style={{ width: "auto" }}
+                                        color="success"
+                                        onClick={saveUnsave}
+                                    >
+                                        {saves?.products.includes(
+                                            products[selectedProduct]?.id
                                         )
-                                            window.location.href = "/info";
-                                        else {
-                                            if (
-                                                saves?.products.includes(
-                                                    products[selectedProduct].id
-                                                )
-                                            ) {
-                                                save(
-                                                    saves?.products.filter(
-                                                        (lol) =>
-                                                            lol !==
-                                                            products[
-                                                                selectedProduct
-                                                            ]?.id
-                                                    )
-                                                );
-                                                setSaves({
-                                                    ...saves,
-                                                    products:
-                                                        saves?.products.filter(
-                                                            (lol) =>
-                                                                lol !==
-                                                                products[
-                                                                    selectedProduct
-                                                                ]?.id
-                                                        ),
-                                                });
-                                            } else {
-                                                save([
-                                                    ...saves?.products,
-                                                    products[selectedProduct]
-                                                        ?.id,
-                                                ]);
-                                                setSaves({
-                                                    ...saves,
-                                                    products: [
-                                                        ...saves?.products,
-                                                        products[
-                                                            selectedProduct
-                                                        ]?.id,
-                                                    ],
-                                                });
-                                            }
-                                        }
-                                    }}
-                                >
-                                    {saves?.products.includes(
-                                        products[selectedProduct]?.id
-                                    )
-                                        ? "Unsave"
-                                        : "Save"}
-                                </Button>
+                                            ? "Unsave"
+                                            : "Save"}
+                                    </Button>
+                                </Col>
                             </Row>
                         </Col>
                     </Row>
