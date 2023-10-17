@@ -33,8 +33,10 @@ Card {
     border: 0;
     border-radius: 5px;
     width: 40%;
-    height: 40px;
+    /* height: 40px; */
+    min-height: 40px;
     position: absolute;
+    color: black;
     bottom: 5%;
     left: 30%;
     background-color: #AF94F6;

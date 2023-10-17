@@ -10,6 +10,7 @@ import {
     Col,
     Modal,
     ModalBody,
+    ModalHeader,
     Badge,
 } from "reactstrap";
 
@@ -51,17 +52,15 @@ function Products() {
 
     const save = async (lol) => {
         if (saves) {
-            console.log(saves);
-            const sth = await updateDoc(doc(firestore, `saved/${saves.id}`), {
+            await updateDoc(doc(firestore, `saved/${saves.id}`), {
                 products: lol,
             });
-            console.log(sth);
         } else {
-            const sth = await addDoc(SavedCollection, {
+            await addDoc(SavedCollection, {
                 phone: localStorage.getItem("userInfo").phone,
                 products: lol,
             });
-            console.log(sth);
+            getSaved();
         }
     };
 
@@ -110,7 +109,6 @@ function Products() {
                     id: data.id,
                 };
             });
-            console.log(docs, "lol");
             if (docs === undefined) {
                 await addDoc(SavedCollection, {
                     phone: user.phone,
@@ -130,13 +128,20 @@ function Products() {
         tempDatas.forEach((data) => {
             docs.push({ ...data.data(), id: data.id });
         });
-
+        docs.sort((a, b) => {
+            if (a.value <= b.value) {
+                return -1;
+            } else if (a.value > b.value) {
+                return 1;
+            }
+            return 0;
+        });
         setConditions(docs);
     };
 
     const getProducts = async () => {
         const tempDatas = await getDocs(ProductsCollection);
-        const docs = [];
+        let docs = [];
 
         tempDatas.forEach((data) => {
             docs.push({ ...data.data(), id: data.id });
@@ -282,6 +287,14 @@ function Products() {
             </div>
 
             <Modal isOpen={modal} toggle={toggle} size="xl">
+                <ModalHeader
+                    style={{
+                        display: "flex",
+                        justifyContent: "right",
+                    }}
+                >
+                    <Button onClick={toggle}>X</Button>
+                </ModalHeader>
                 <ModalBody>
                     <Row>
                         <Col md="6" sm="12">
@@ -289,9 +302,8 @@ function Products() {
                                 <img
                                     alt="pic1"
                                     src={
-                                        products[selectedProduct]?.images[
-                                            selectedImage
-                                        ]
+                                        showingProducts[selectedProduct]
+                                            ?.images[selectedImage]
                                     }
                                     style={{ borderRadius: "5%" }}
                                 />
@@ -304,7 +316,7 @@ function Products() {
                                     marginTop: "20px",
                                 }}
                             >
-                                {products[selectedProduct]?.images.map(
+                                {showingProducts[selectedProduct]?.images.map(
                                     (image, idx) => {
                                         if (idx === selectedImage) return <></>;
                                         return (
@@ -353,24 +365,11 @@ function Products() {
                                                 marginLeft: "-15px",
                                             }}
                                         >
-                                            {products[selectedProduct]?.name}
-                                        </h1>
-                                    </Col>
-                                    <Col
-                                        md="2"
-                                        style={{
-                                            alignItems: "center",
-                                            display: "flex",
-                                        }}
-                                    >
-                                        <Badge color="primary">
                                             {
-                                                conditions[
-                                                    products[selectedProduct]
-                                                        ?.condition
-                                                ]?.name
+                                                showingProducts[selectedProduct]
+                                                    ?.name
                                             }
-                                        </Badge>
+                                        </h1>
                                     </Col>
                                 </Row>
                                 <Row
@@ -379,10 +378,44 @@ function Products() {
                                         marginBottom: "30px",
                                     }}
                                 >
-                                    ₮{products[selectedProduct]?.price}
+                                    ₮{showingProducts[selectedProduct]?.price}
                                 </Row>
+                                <Col
+                                    md="2"
+                                    style={{
+                                        alignItems: "center",
+                                        display: "flex",
+                                    }}
+                                >
+                                    <Badge color="primary">
+                                        {
+                                            conditions[
+                                                showingProducts[selectedProduct]
+                                                    ?.condition
+                                            ]?.name
+                                        }
+                                    </Badge>
+                                    <Badge
+                                        color="primary"
+                                        style={{
+                                            marginLeft: "5px",
+                                            marginRight: "5px",
+                                        }}
+                                    >
+                                        {
+                                            showingProducts[selectedProduct]
+                                                ?.color
+                                        }
+                                    </Badge>
+                                    <Badge color="primary">
+                                        {showingProducts[selectedProduct]?.size}
+                                    </Badge>
+                                </Col>
                                 <Row>
-                                    {products[selectedProduct]?.description}
+                                    {
+                                        showingProducts[selectedProduct]
+                                            ?.description
+                                    }
                                 </Row>
                             </Row>
                             <Row
@@ -413,7 +446,7 @@ function Products() {
                                         onClick={saveUnsave}
                                     >
                                         {saves?.products.includes(
-                                            products[selectedProduct]?.id
+                                            showingProducts[selectedProduct]?.id
                                         )
                                             ? "Unsave"
                                             : "Save"}

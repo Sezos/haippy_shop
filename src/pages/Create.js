@@ -417,6 +417,28 @@ function Create() {
                                 ></Input>
                             </InputGroup>
                             <InputGroup style={{ marginBottom: "10px" }}>
+                                <InputGroupText>Size</InputGroupText>
+                                <Input
+                                    onChange={(e) => {
+                                        setData({
+                                            ...data,
+                                            size: e.target.value,
+                                        });
+                                    }}
+                                ></Input>
+                            </InputGroup>
+                            <InputGroup style={{ marginBottom: "10px" }}>
+                                <InputGroupText>Color</InputGroupText>
+                                <Input
+                                    onChange={(e) => {
+                                        setData({
+                                            ...data,
+                                            color: e.target.value,
+                                        });
+                                    }}
+                                ></Input>
+                            </InputGroup>
+                            <InputGroup style={{ marginBottom: "10px" }}>
                                 <Input
                                     multiple
                                     onChange={(e) => {

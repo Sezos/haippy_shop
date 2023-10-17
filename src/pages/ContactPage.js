@@ -31,9 +31,23 @@ function ContactPage() {
                     // height: "90vh",
                     borderRadius: "40px",
                     border: "5px solid #AF94F6",
+                    position: "relative",
                     padding: "20px",
                 }}
             >
+                <Button
+                    style={{
+                        position: "absolute",
+                        left: "15px",
+                        top: "15px",
+                        backgroundColor: "#AF94F6",
+                    }}
+                    onClick={() => {
+                        window.location.href = "/";
+                    }}
+                >
+                    Back
+                </Button>
                 <Col style={{ height: "100%" }}>
                     <Row>
                         <Col>
@@ -81,8 +95,9 @@ function ContactPage() {
                                 }}
                             >
                                 <b>
-                                    Худалдан авалт хийх бол дараах сувгуудаар
-                                    холбогдох
+                                    Вебтэй холбоотой санал хүсэлт байвал Contact
+                                    хэсэгт өөрийн мэдээллээ оруулснаар админд
+                                    таны хүсэлт илгээгдэнэ.
                                 </b>
                             </Row>
                             <Row style={{ marginTop: "20px" }}>
@@ -238,7 +253,7 @@ function ContactPage() {
                                         justifyContent: "center",
                                         border: "1px solid gray",
                                     }}
-                                    href="email:nanasan0412@gmail.com"
+                                    href="mailto:nanasan0412@gmail.com"
                                 >
                                     <FontAwesomeIcon
                                         color="white"

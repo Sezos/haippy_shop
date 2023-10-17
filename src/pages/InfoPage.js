@@ -30,6 +30,7 @@ function InfoPage() {
         }
         localStorage.setItem("userInfo", JSON.stringify({ name, phone }));
         alert.show("User Info Saved! You can go back now", { type: "success" });
+        window.location.href = "/";
     };
 
     return (
@@ -38,7 +39,6 @@ function InfoPage() {
             style={{
                 display: "flex",
                 width: "100vw",
-                height: "100vh",
                 alignItems: "center",
                 justifyContent: "center",
             }}
@@ -47,55 +47,30 @@ function InfoPage() {
                 style={{
                     background: "white",
                     width: "90%",
-                    height: "90vh",
+                    marginTop: "50px",
                     borderRadius: "40px",
                     border: "5px solid #AF94F6",
                     padding: "20px",
                     display: "flex",
                     alignItems: "center",
+                    position: "relative",
                     justifyContent: "center",
                 }}
             >
-                <div
+                <Button
                     style={{
-                        display: "flex",
                         position: "absolute",
-                        width: "calc(90% - 5px)",
-                        height: window.innerWidth <= 640 ? "20vh" : "20vh",
-                        left: "5%",
-                        top: "5%",
-                        borderTopLeftRadius: "40px",
-                        borderTopRightRadius: "40px",
-                        border: "5px solid #AF94F6",
-                        borderRight: "5px",
-                        borderBottom: "0px",
-                        backgroundColor: "#dccdfe",
-                        padding: "3%",
+                        left: "15px",
+                        top: "15px",
+                        backgroundColor: "#AF94F6",
+                    }}
+                    onClick={() => {
+                        window.location.href = "/";
                     }}
                 >
-                    <List>
-                        <p
-                            style={{
-                                fontSize:
-                                    window.innerWidth <= 640 ? "40%" : "90%",
-                            }}
-                        >
-                            Бүтээгдэхүүн худалдан авахдаа дараах зөвлөмжийг
-                            дагаарай. Бүтээгдэхүүн бүрийн доор хэсэгт байрлах
-                            See more хэсгээс бүтээгдэхүүний зураг, дэлгэрэнгүй
-                            тайлбар хэсгийг харах боломжтой. See more → Contact
-                            us хэсэгт харуулж буй instagram эсвэл Facebook
-                            хаягуудаар холбогдон сонирхсон эд зүйлээ худалдан
-                            авах боломжтой. Вебтэй холбоотой санал хүсэлт байвал
-                            Contact хэсэгт өөрийн мэдээллээ оруулснаар админд
-                            таны хүсэлт илгээгдэнэ. Сонирхсон эд зүйлээ сонгон
-                            Save хийх - Save хийснээр таны сонирхсон бүх бараа
-                            хадгалагдаад явах ба мэдээллээ оруулснаар админ таны
-                            сонирхсон бүх барааны мэдээллийг харан таньтай
-                            холбогдох боломжтой болно.
-                        </p>
-                    </List>
-                </div>
+                    Back
+                </Button>
+
                 <Col
                     style={{
                         display: "flex",
@@ -112,6 +87,7 @@ function InfoPage() {
                             color: "#AF94F6",
                             fontWeight: "bolder",
                             fontSize: "30px",
+                            marginTop: "50px",
                             marginBottom: "20px",
                         }}
                     >
@@ -162,6 +138,41 @@ function InfoPage() {
                                 Save
                             </Button>
                         </FormGroup>
+                    </Row>
+                    <Row>
+                        <div
+                            style={{
+                                display: "flex",
+                                width: "100%",
+                                bottom: "0",
+                                top: "80vh",
+                                borderRadius: "35px",
+                                backgroundColor: "#dccdfe",
+                                padding: "3%",
+                                border: "5px solid #AF94F6",
+                            }}
+                        >
+                            <List>
+                                <p>
+                                    Бүтээгдэхүүн худалдан авахдаа дараах
+                                    зөвлөмжийг дагаарай. Бүтээгдэхүүн бүрийн
+                                    доор хэсэгт байрлах See more хэсгээс
+                                    бүтээгдэхүүний зураг, дэлгэрэнгүй тайлбар
+                                    хэсгийг харах боломжтой. See more → Contact
+                                    us хэсэгт харуулж буй instagram эсвэл
+                                    Facebook хаягуудаар холбогдон сонирхсон эд
+                                    зүйлээ худалдан авах боломжтой. Вебтэй
+                                    холбоотой санал хүсэлт байвал Contact хэсэгт
+                                    өөрийн мэдээллээ оруулснаар админд таны
+                                    хүсэлт илгээгдэнэ. Сонирхсон эд зүйлээ
+                                    сонгон Save хийх - Save хийснээр таны
+                                    сонирхсон бүх бараа хадгалагдаад явах ба
+                                    мэдээллээ оруулснаар админ таны сонирхсон
+                                    бүх барааны мэдээллийг харан таньтай
+                                    холбогдох боломжтой болно.
+                                </p>
+                            </List>
+                        </div>
                     </Row>
                 </Col>
             </Container>
