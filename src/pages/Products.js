@@ -51,7 +51,9 @@ function Products() {
     };
 
     const save = async (lol) => {
-        if (saves) {
+        // eslint-disable-next-line eqeqeq
+        if (saves && saves != { phone: "", products: [] }) {
+            console.log(saves);
             await updateDoc(doc(firestore, `saved/${saves.id}`), {
                 products: lol,
             });
@@ -96,6 +98,7 @@ function Products() {
 
     const getSaved = async () => {
         const user = JSON.parse(localStorage.getItem("userInfo"));
+        console.log(user);
         if (user && user.phone) {
             const datas = await getDocs(
                 query(SavedCollection, where("phone", "==", user.phone))

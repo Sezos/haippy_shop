@@ -37,7 +37,7 @@ import {
 import { useAlert } from "react-alert";
 
 function CreatePage() {
-    const user = JSON.parse(localStorage.getItem("userInfo"));
+    const user = JSON.parse(localStorage.getItem("adminInfo"));
 
     const [loggedIn, setLoggedIn] = useState(
         user && user.access_token ? true : false
@@ -52,7 +52,7 @@ function CreatePage() {
         try {
             const sth = await signInWithEmailAndPassword(auth, mail, pass);
             localStorage.setItem(
-                "userInfo",
+                "adminInfo",
                 JSON.stringify({ mail, access_token: sth.user.accessToken })
             );
             setLoggedIn(true);
