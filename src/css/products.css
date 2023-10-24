@@ -29,6 +29,20 @@ Card {
     color: white;
 }
 
+.card-sold {
+    /* font-weight: bold; */
+    position: absolute;
+    background-color: green;
+    padding-right: 10px;
+    padding-left:10px;
+    border-radius: 5px;
+    right: 5px;
+    /* transform: translate(-50%, 0); */
+    text-align: center;
+    top: 5px;
+    color: white;
+}
+
 .card-button {
     border: 0;
     border-radius: 5px;

@@ -255,8 +255,18 @@ function Products() {
                                     <CardImg
                                         variant="top"
                                         className="card-image"
+                                        style={
+                                            product.sold
+                                                ? { filter: "blur(2px)" }
+                                                : {}
+                                        }
                                         src={product?.images[0]}
                                     />
+                                    {product.sold ? (
+                                        <p className="card-sold">Sold</p>
+                                    ) : (
+                                        <></>
+                                    )}
                                     <p className="card-text">{product.name}</p>
                                     <button
                                         className="card-button"
@@ -269,6 +279,7 @@ function Products() {
                                     </button>
 
                                     {product &&
+                                        !product.sold &&
                                         saves?.products.includes(
                                             product.id
                                         ) && (
@@ -418,41 +429,45 @@ function Products() {
                                     }
                                 </Row>
                             </Row>
-                            <Row
-                                style={{
-                                    position: "absolute",
-                                    bottom: "20px",
-                                    width:
-                                        window.innerWidth <= 640
-                                            ? "90%"
-                                            : "47%",
-                                }}
-                            >
-                                <Col>
-                                    <Button
-                                        // style={{ width: "auto" }}
-                                        color="primary"
-                                        onClick={() => {
-                                            window.location.href = "/contact";
-                                        }}
-                                    >
-                                        Contact
-                                    </Button>
-                                </Col>
-                                <Col>
-                                    <Button
-                                        // style={{ width: "auto" }}
-                                        color="success"
-                                        onClick={saveUnsave}
-                                    >
-                                        {saves?.products.includes(
-                                            showingProducts[selectedProduct]?.id
-                                        )
-                                            ? "Unsave"
-                                            : "Save"}
-                                    </Button>
-                                </Col>
-                            </Row>
+                            {!showingProducts[selectedProduct]?.sold && (
+                                <Row
+                                    style={{
+                                        position: "absolute",
+                                        bottom: "20px",
+                                        width:
+                                            window.innerWidth <= 640
+                                                ? "90%"
+                                                : "47%",
+                                    }}
+                                >
+                                    <Col>
+                                        <Button
+                                            // style={{ width: "auto" }}
+                                            color="primary"
+                                            onClick={() => {
+                                                window.location.href =
+                                                    "/contact";
+                                            }}
+                                        >
+                                            Contact
+                                        </Button>
+                                    </Col>
+                                    <Col>
+                                        <Button
+                                            // style={{ width: "auto" }}
+                                            color="success"
+                                            onClick={saveUnsave}
+                                        >
+                                            {saves?.products.includes(
+                                                showingProducts[selectedProduct]
+                                                    ?.id
+                                            )
+                                                ? "Unsave"
+                                                : "Save"}
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            )}
                         </Col>
                     </Row>
                 </ModalBody>

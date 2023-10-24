@@ -7,12 +7,13 @@ import {
     setDoc,
     doc,
     deleteDoc,
+    updateDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 import Resizer from "react-image-file-resizer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faMoneyBill, faTrash } from "@fortawesome/free-solid-svg-icons";
 import {
     Button,
     Card,
@@ -36,6 +37,7 @@ import {
 function Create() {
     const [modal, setModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
+    const [sellingModal, setSellingModal] = useState(false);
 
     const [products, setProducts] = useState([]);
     const [productsShow, setProductsShow] = useState([]);
@@ -54,6 +56,7 @@ function Create() {
 
     const [state, setState] = useState(0);
     const [deleting, setDeleting] = useState("");
+    const [selling, setSelling] = useState({});
     const [saves, setSaves] = useState([]);
 
     useEffect(() => {
@@ -114,6 +117,7 @@ function Create() {
 
     const toggle = () => setModal(!modal);
     const toggleDelete = () => setDeleteModal(!deleteModal);
+    const toggleSelling = () => setSellingModal(!sellingModal);
 
     const deleteProduct = async () => {
         try {
@@ -122,6 +126,20 @@ function Create() {
             console.log(err);
         } finally {
             toggleDelete();
+            window.location.reload();
+        }
+    };
+
+    const sellProduct = async () => {
+        try {
+            const sth = await updateDoc(doc(ProductsCollection, selling?.id), {
+                sold: selling.type,
+            });
+            console.log(sth);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            toggleSelling();
             window.location.reload();
         }
     };
@@ -214,7 +232,8 @@ function Create() {
                 display: "flex",
                 alignItems: "center",
                 width: "100%",
-                height: "100vh",
+                marginTop: "5%",
+                marginBottom: "5%",
                 justifyContent: "center",
             }}
         >
@@ -222,7 +241,6 @@ function Create() {
                 style={{
                     background: "white",
                     width: "90%",
-                    height: "90vh",
                     borderRadius: "40px",
                     border: "5px solid #AF94F6",
                     padding: "20px",
@@ -275,6 +293,7 @@ function Create() {
                                             <th>Condition</th>
                                             <th>Type</th>
                                             <th>Price</th>
+                                            <th>Sold</th>
                                             <th>Delete</th>
                                         </tr>
                                     </thead>
@@ -303,6 +322,30 @@ function Create() {
                                                     <td>{product.condition}</td>
                                                     <td>{product.types}</td>
                                                     <td>{product.price}</td>
+                                                    <td>
+                                                        <Button
+                                                            color={
+                                                                product.sold
+                                                                    ? "danger"
+                                                                    : "success"
+                                                            }
+                                                            onClick={() => {
+                                                                setSelling({
+                                                                    id: product.id,
+                                                                    type: product.sold
+                                                                        ? 0
+                                                                        : 1,
+                                                                });
+                                                                toggleSelling();
+                                                            }}
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    faMoneyBill
+                                                                }
+                                                            />
+                                                        </Button>
+                                                    </td>
                                                     <td>
                                                         <Button
                                                             color="danger"
@@ -494,6 +537,22 @@ function Create() {
                             Yes, I'm sure bitch
                         </Button>{" "}
                         <Button color="secondary" onClick={toggleDelete}>
+                            just kidding
+                        </Button>
+                    </ModalFooter>
+                </Modal>
+                <Modal isOpen={sellingModal} toggle={toggleSelling}>
+                    <ModalHeader toggle={toggleSelling}>
+                        Are you sure?
+                    </ModalHeader>
+                    <ModalBody>
+                        Are you sure that you sold this product?
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="danger" onClick={sellProduct}>
+                            Yes, I'm sure bitch
+                        </Button>{" "}
+                        <Button color="secondary" onClick={toggleSelling}>
                             just kidding
                         </Button>
                     </ModalFooter>
