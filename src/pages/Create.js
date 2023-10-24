@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { firestore, storage } from "./Firebase";
+import { firestore, storage, auth } from "./Firebase";
 
 import {
     getDocs,
@@ -10,6 +10,7 @@ import {
     updateDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import Resizer from "react-image-file-resizer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,6 +34,114 @@ import {
     Row,
     Table,
 } from "reactstrap";
+import { useAlert } from "react-alert";
+
+function CreatePage() {
+    const user = JSON.parse(localStorage.getItem("userInfo"));
+
+    const [loggedIn, setLoggedIn] = useState(
+        user && user.access_token ? true : false
+    );
+
+    const [mail, setMail] = useState("");
+    const [pass, setPass] = useState("");
+
+    const alert = useAlert();
+
+    const signIn = async () => {
+        try {
+            const sth = await signInWithEmailAndPassword(auth, mail, pass);
+            localStorage.setItem(
+                "userInfo",
+                JSON.stringify({ mail, access_token: sth.user.accessToken })
+            );
+            setLoggedIn(true);
+        } catch (err) {
+            alert.show("Invalid Email or Password", { type: "error" });
+            console.error(err);
+        }
+    };
+
+    return (
+        <div>
+            {!loggedIn ? (
+                <div>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            width: "100%",
+                            marginTop: "5%",
+                            marginBottom: "5%",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Container
+                            style={{
+                                background: "white",
+                                width: "90%",
+                                height: "80vh",
+                                borderRadius: "40px",
+                                border: "5px solid #AF94F6",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                padding: "20px",
+                            }}
+                        >
+                            <div>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <h2>Sign in</h2>
+                                </div>
+                                <InputGroup>
+                                    <InputGroupText>Mail</InputGroupText>
+                                    <Input
+                                        value={mail}
+                                        onChange={(e) => {
+                                            setMail(e.target.value);
+                                        }}
+                                    ></Input>
+                                </InputGroup>
+                                <InputGroup
+                                    style={{
+                                        marginBottom: "20px",
+                                        marginTop: "20px",
+                                    }}
+                                >
+                                    <InputGroupText>Password</InputGroupText>
+                                    <Input
+                                        type="password"
+                                        value={pass}
+                                        onChange={(e) => {
+                                            setPass(e.target.value);
+                                        }}
+                                    ></Input>
+                                </InputGroup>
+                                <Button
+                                    style={{
+                                        width: "100%",
+                                        backgroundColor: "#AF94F6",
+                                    }}
+                                    onClick={signIn}
+                                >
+                                    Log in
+                                </Button>
+                            </div>
+                        </Container>
+                    </div>
+                </div>
+            ) : (
+                <Create></Create>
+            )}
+        </div>
+    );
+}
 
 function Create() {
     const [modal, setModal] = useState(false);
@@ -562,4 +671,4 @@ function Create() {
     );
 }
 
-export default Create;
+export default CreatePage;
